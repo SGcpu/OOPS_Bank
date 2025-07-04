@@ -1,3 +1,5 @@
+import random
+
 class BalanceException(Exception):
     pass
 
@@ -5,6 +7,7 @@ class BankAccount:
     def __init__(self, initialAmount, acctName):
         self.balance = initialAmount
         self.name = acctName
+        self.account_number = ''.join(str(random.randint(0, 9)) for _ in range(12))
         print(f"\nAccount '{self.name}' created.\nBalance = ${self.balance:.2f}")
 
     def get_balance(self):
@@ -14,6 +17,8 @@ class BankAccount:
         self.balance = self.balance + amount
         print("\nDeposit Complete.")
         self.get_balance()
+
+        
     def viableTransaction(self, amount):
         if self.balance >= amount:
             return
@@ -31,11 +36,11 @@ class BankAccount:
 
     def transfer(self, amount, account):
         try:
-            print('\n**********\n\nBeginning Transfer..🚀')
+            print(f'\n{'*'*8}{self.account_number[-4:]}\n\nBeginning Transfer..🚀')
             self.viableTransaction(amount)
             self.withdraw(amount)
             account.deposit(amount)
-            print('\nTransfer Completed!\n\n**********')
+            print(f"\nTransfer Completed!\n\n{'*'*8}{self.account_number[-4:]}")
         except BalanceException as error:
             print(f'\nTransfer incomplete! {error}')
 
